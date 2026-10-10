@@ -3,5 +3,5 @@ import app from "./src/app.js";
 
 
 app.listen(3000,()=>{
-  console.log("Server is starting");
+  console.log("user service is running on port 3000");
 })
