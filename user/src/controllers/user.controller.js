@@ -5,7 +5,6 @@ import { userModel } from "../models/user.model.js";
 
 const cookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
   sameSite: "lax",
   maxAge: 24 * 60 * 60 * 1000,
 };
@@ -38,7 +37,7 @@ export const register = async (req, res) => {
 
     const token = jwt.sign({
       id:user._id
-    },process.env.JWT_SECRET,{expiresIn:"1d"});
+    },process.env.USER_SECRET,{expiresIn:"1d"});
 
     res.cookie("token", token, cookieOptions);
 
@@ -54,7 +53,8 @@ export const register = async (req, res) => {
 
   } catch (error) {
     return res.status(500).json({
-      message: "Internal server error",
+      message: "Internal server error from register",
+      error
     });
   }
 };
@@ -87,7 +87,7 @@ export const login = async (req, res) => {
 
     const token = jwt.sign(
       { id: user._id },
-      process.env.JWT_SECRET,
+      process.env.USER_SECRET,
       { expiresIn: "1d" }
     );
 
@@ -104,7 +104,7 @@ export const login = async (req, res) => {
       });
   } catch (error) {
     return res.status(500).json({
-      message: "Internal server error",
+      message: "Internal server error from login",
     });
   }
 };
