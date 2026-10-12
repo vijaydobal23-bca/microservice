@@ -2,14 +2,21 @@ import express from "express";
 import { config } from "dotenv";
 config();
 import cookieParser from "cookie-parser";
-import { connectRabbitMq } from "../rabbit.js";
+import { connectRabbitMq, subscribeToQueue } from "./services/rabbit.js";
+import { deliverNewRide } from "./services/newRidePoller.js";
 
 import captonRoutes from "./routes/capton.routes.js";
 const app = express();
 
-connectRabbitMq().catch((err) => {
-  console.log("RabbitMQ connection failled - >", err.message);
-});
+connectRabbitMq()
+  .then(() =>
+    subscribeToQueue("new-ride", async (ride) => {
+      deliverNewRide(JSON.parse(ride));
+    })
+  )
+  .catch((err) => {
+    console.log("RabbitMQ connection failed - >", err.message);
+  });
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));

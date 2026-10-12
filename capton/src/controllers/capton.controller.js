@@ -2,6 +2,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { captonModel } from "../models/capton.model.js";
+import { waitForNewRide } from "../services/newRidePoller.js";
 
 const cookieOptions = {
   httpOnly: true,
@@ -131,6 +132,28 @@ export const profile = async (req, res) => {
       isAvailable:req.capton.isAvailable
     },
   });
+};
+
+export const getNewRide = async (req, res) => {
+  const abortController = new AbortController();
+  let responseFinished = false;
+
+  res.on("finish", () => {
+    responseFinished = true;
+  });
+  res.on("close", () => {
+    if (!responseFinished) {
+      abortController.abort();
+    }
+  });
+
+  const ride = await waitForNewRide(25_000, abortController.signal);
+
+  if (!ride) {
+    return res.status(204).end();
+  }
+
+  return res.status(200).json({ ride });
 };
 
 export const toggleAvailability = async (req ,res)=>{
