@@ -6,3 +6,4 @@ connectDb();
 app.listen(3002,()=>{
   console.log("capton service is running on port 3002");
 }) 
+ 
