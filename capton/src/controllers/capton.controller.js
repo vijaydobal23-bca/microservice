@@ -171,4 +171,4 @@ export const toggleAvailability = async (req ,res)=>{
   }
 } 
 
-// all services done
+// all services are done
