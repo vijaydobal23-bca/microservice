@@ -1,8 +1,7 @@
 import jwt from "jsonwebtoken";
 
-const getToken = (req) => {
-  return req.cookies?.token || req.headers.authorization?.split(" ")[1];
-};
+const getToken = (req) =>
+  req.cookies?.token || req.headers.authorization?.split(" ")[1];
 
 export const authUser = async (req, res, next) => {
   try {
@@ -20,7 +19,7 @@ export const authUser = async (req, res, next) => {
       _id: decoded.id,
     };
 
-    next();
+    return next();
   } catch (error) {
     return res.status(401).json({
       message: "Invalid or expired token",
@@ -44,11 +43,10 @@ export const authCapton = async (req, res, next) => {
       _id: decoded.id,
     };
 
-    next();
+    return next();
   } catch (error) {
     return res.status(401).json({
       message: "Invalid or expired token",
     });
   }
 };
-

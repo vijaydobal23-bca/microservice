@@ -4,7 +4,7 @@ import { authCapton, authUser } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.post("/create", authUser, createRide);
+router.post("/create-ride", authUser, createRide);
 router.patch("/accept", authCapton, acceptRide);
 
 export default router;

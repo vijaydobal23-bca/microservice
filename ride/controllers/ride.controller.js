@@ -1,4 +1,5 @@
 import { rideModel } from "../models/ride.model.js";
+import { publishToQueue } from "../services/rabbit.js";
 
 export const createRide = async (req, res) => {
   try {
@@ -15,6 +16,8 @@ export const createRide = async (req, res) => {
       pickup,
       destination,
     });
+
+    await publishToQueue("new-ride", ride);
 
     return res.status(201).json(ride);
   } catch (error) {

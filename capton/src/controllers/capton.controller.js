@@ -169,4 +169,6 @@ export const toggleAvailability = async (req ,res)=>{
       message:err.message
     })
   }
-}
+} 
+
+// all services

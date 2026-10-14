@@ -3,9 +3,14 @@ import { config } from "dotenv";
 import cookieParser from "cookie-parser";
 import { connectDb } from "./config/db.js";
 import rideRoutes from "./routes/ride.routes.js";
+import { connectRabbitMq } from "./services/rabbit.js";
+
 
 config();
 connectDb();
+connectRabbitMq().catch((err) => {
+  console.log("RabbitMQ connection failled - >", err.message);
+});
 
 const app = express();
 
