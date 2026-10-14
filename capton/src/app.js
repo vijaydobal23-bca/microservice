@@ -28,5 +28,15 @@ app.get("/" ,(req ,res)=>{
   res.send("Hello world");
 })
 
+app.get("/headth" ,(req ,res)=>{
+  res.status(200).json({
+    message:"Server is running",
+    statusCode:200,
+    err:null,
+    secure:true,
+    success:true
+  })
+})
+
 
 export default app;
